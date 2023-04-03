@@ -1,0 +1,26 @@
+Pressemitteilung - Hacken mit staatlicher Lizenz im OK Lab Flensburg - am 5.4.2023 um 18 Uhr
+
+
+PRESSEMITTEILUNG
+
+Hacken mit staatlicher Lizenz im OK Lab Flensburg
+
+Am Mittwoch den 5. April 2023 findet um 18 Uhr das erste Treffen des OK Lab Flensburgs im KRAN, Am Nordertor 2 statt.
+
+An welchen Orten häufen sich Unfälle? Wo sind denkmalgeschützte Gebäude? Diesen und ähnlichen Fragen gehen die Stadt<entwickler:innen /> nach. Die Antworten stecken u. a. in Behördendaten. 
+
+Sie wollen nicht in Firmendatenbanken eindringen oder Regierungsseiten lahmlegen. Im Gegenteil. Sie hacken mit staatlicher Lizenz. Die Initiative Code for Germany hat zum Ziel, die digitale Szene zusammenzubringen, damit Ideen und Projekte entstehen, die auf Basis offener Daten Nützliches für die Stadtgesellschaft ermöglichen.
+ 
+Jede(r) ist eingeladen teilzunehmen. Zum Anlass des ersten Treffens spendieren die Initiatoren Pizza und Getränke. Das OK Lab Flensburg trifft sich danach an jedem Mittwoch von 18 bis 21 Uhr.
+
+
+Bildtext:
+Beispielanwendung zur Anzeige von denkmalgeschützten Gebäuden in Flensburg.
+
+Weitere Infos unter:
+https://codefor.de/flensburg
+https://twitter.com/oklabflensburg
+
+Kontakt:
+Aurelius Wendelken, webtobesocial@gmail.com
+Roald Christesen, roald@grain.one, 0176 59978074
