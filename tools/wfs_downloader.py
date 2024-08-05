@@ -9,7 +9,7 @@ from sqlalchemy import create_engine
 from dotenv import load_dotenv
 from pathlib import Path
 
-env_path = Path('.env')
+env_path = Path('../.env')
 load_dotenv(dotenv_path=env_path)
 
 
@@ -23,7 +23,7 @@ try:
     connection_string = f'postgresql://{user}:{password}@{host}:{port}/{database}'
     engine = create_engine(connection_string)
 except Exception as e:
-    print(e)
+    print('sad', e)
 
 
 
@@ -90,8 +90,10 @@ def main(url, from_crs, to_crs, service, version, output, table):
     print(layers)
 
     for layer in layers:
+        layer_name = layer.split(':')[0]
+        table_name = f'{table}_{layer_name}'
         df = loop_layer(url, service, version, from_crs, to_crs, layer)
-        df.to_postgis(table, if_exists='replace', con=engine)
+        df.to_postgis(table_name, if_exists='replace', con=engine)
         # df.to_file(output)
 
 
