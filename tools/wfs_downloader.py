@@ -90,7 +90,7 @@ def main(url, from_crs, to_crs, service, version, output, table):
     print(layers)
 
     for layer in layers:
-        layer_name = layer.split(':')[-1]
+        layer_name = layer.split(':')[-1].lower()
         print(layer_name)
         table_name = f'{table}_{layer_name}'
         df = loop_layer(url, service, version, from_crs, to_crs, layer)
