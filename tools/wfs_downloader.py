@@ -9,6 +9,8 @@ from sqlalchemy import create_engine
 from dotenv import load_dotenv
 from pathlib import Path
 
+from urllib.error import HTTPError
+
 env_path = Path('../.env')
 load_dotenv(dotenv_path=env_path)
 
@@ -27,10 +29,14 @@ except Exception as e:
 
 
 
-def fetch_features(url, service, version, from_crs, to_crs, layer, limit, ix) -> gp.GeoDataFrame:
-    params = dict(service=service, version=version, request='GetFeature',
-        typeNames=layer, count=limit, startIndex=ix*limit,
-        outputFormat='application/gml+xml; version=3.2', crsname=from_crs)
+def fetch_features(url, service, version, format, from_crs, to_crs, layer, limit, ix, retry = False) -> gp.GeoDataFrame:
+    if not retry:
+        params = dict(service=service, version=version, request='GetFeature',
+                      typeNames=layer, count=limit, startIndex=ix*limit,
+                      outputFormat=format, crsname=from_crs)
+    else:
+        params = dict(service=service, version=version, request='GetFeature',
+                      typeNames=layer, outputFormat=format, crsname=from_crs)
 
     wfs_request_url = Request('GET', url, params=params).prepare().url
     print(wfs_request_url)
@@ -39,6 +45,9 @@ def fetch_features(url, service, version, from_crs, to_crs, layer, limit, ix) ->
         df_new = gp.read_file(wfs_request_url)
         df_new = df_new.set_crs(crs=from_crs)
         df_new = df_new.to_crs(crs=to_crs)
+    except HTTPError as e:
+        print(e)
+        return
     except ValueError as e:
         print(e)
         return
@@ -46,14 +55,15 @@ def fetch_features(url, service, version, from_crs, to_crs, layer, limit, ix) ->
     return df_new
 
 
-def loop_layer(url, service, version, from_crs, to_crs, layer, max_loops=100, item_limit=1000) -> gp.GeoDataFrame:
+def loop_layer(url, service, version, format, from_crs, to_crs, layer, max_loops=100, item_limit=1000) -> gp.GeoDataFrame:
     df = None
     cnt = 0
 
     for ix in range(1000):
-        df_new = fetch_features(url, service, version, from_crs, to_crs, layer, item_limit, ix)
+        df_new = fetch_features(url, service, version, format, from_crs, to_crs, layer, item_limit, ix)
 
         if df_new is None:
+            df = fetch_features(url, service, version, format, from_crs, to_crs, layer, item_limit, ix, True)
             break
 
         new_cnt = len(df_new)
@@ -75,14 +85,15 @@ def loop_layer(url, service, version, from_crs, to_crs, layer, max_loops=100, it
 
 
 @click.command()
-@click.option('--url', '-u', required=True, type=str, help='xxx')
-@click.option('--to_crs', '-tc', required=True, type=str, help='xxx')
-@click.option('--from_crs', '-fc', required=True, type=str, help='xxx')
-@click.option('--version', '-v', required=True, type=str, help='xxx')
-@click.option('--service', '-s', required=True, type=str, help='xxx')
-@click.option('--output', '-o', type=str, help='xxx')
-@click.option('--table', '-t', type=str, help='xxx')
-def main(url, from_crs, to_crs, service, version, output, table):
+@click.option('--url', '-u', required=True, type=str, help='Specify the URL of your WFS file')
+@click.option('--to_crs', '-tc', required=True, type=str, help='Set the CRS you want to use')
+@click.option('--from_crs', '-fc', required=True, type=str, help='Set the CRS of your source file')
+@click.option('--version', '-v', required=True, type=str, help='Specify the version number as string')
+@click.option('--service', '-s', required=True, type=str, help='Set the service name of from your source')
+@click.option('--format', '-f', required=True, type=str, help='Set the WFS format you want to use')
+@click.option('--output', '-o', type=str, help='Set the source output format')
+@click.option('--prefix', '-p', type=str, help='Specify the table prefix')
+def main(url, from_crs, to_crs, service, version, format, output, prefix):
     # url = 'https://gdi.berlin.de/services/wfs/postleitzahlen'
 
     wfs = WebFeatureService(url=url, version=version)
@@ -92,8 +103,8 @@ def main(url, from_crs, to_crs, service, version, output, table):
     for layer in layers:
         layer_name = layer.split(':')[-1].lower()
         print(layer_name)
-        table_name = f'{table}_{layer_name}'
-        df = loop_layer(url, service, version, from_crs, to_crs, layer)
+        table_name = f'{prefix}_{layer_name}'
+        df = loop_layer(url, service, version, format, from_crs, to_crs, layer)
         df.to_postgis(table_name, if_exists='replace', con=engine)
         # df.to_file(output)
 
