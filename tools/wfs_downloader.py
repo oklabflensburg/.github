@@ -43,7 +43,10 @@ def fetch_features(url, service, version, format, from_crs, to_crs, layer, limit
 
     try:
         df_new = gp.read_file(wfs_request_url)
-        df_new = df_new.set_crs(crs=from_crs)
+
+        if df_new.crs is None:
+            df_new = df_new.set_crs(crs=from_crs)
+
         df_new = df_new.to_crs(crs=to_crs)
     except HTTPError as e:
         print(e)
@@ -55,11 +58,11 @@ def fetch_features(url, service, version, format, from_crs, to_crs, layer, limit
     return df_new
 
 
-def loop_layer(url, service, version, format, from_crs, to_crs, layer, max_loops=100, item_limit=1000) -> gp.GeoDataFrame:
+def loop_layer(url, service, version, format, from_crs, to_crs, layer, max_loops=100, item_limit=5000) -> gp.GeoDataFrame:
     df = None
     cnt = 0
 
-    for ix in range(1000):
+    for ix in range(10000):
         df_new = fetch_features(url, service, version, format, from_crs, to_crs, layer, item_limit, ix)
 
         if df_new is None:
