@@ -44,7 +44,7 @@ def fetch_features(url, service, version, format, from_crs, to_crs, layer, limit
     try:
         df_new = gp.read_file(wfs_request_url)
 
-        if df_new.crs is None:
+        if not hasattr(df_new, 'crs') or df_new.crs is None:
             df_new = df_new.set_crs(crs=from_crs)
 
         df_new = df_new.to_crs(crs=to_crs)
