@@ -1,0 +1,32 @@
+name: Funktion vorschlagen
+description: Eine neue Funktion oder Verbesserung vorschlagen
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Ausgangslage
+      description: Welches Problem oder Bedürfnis soll gelöst werden?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Vorschlag
+      description: Wie könnte eine gute Lösung aussehen?
+    validations:
+      required: true
+  - type: textarea
+    id: benefit
+    attributes:
+      label: Nutzen
+      description: Für wen ist die Änderung hilfreich und warum?
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Vor dem Absenden
+      options:
+        - label: Ich habe nach bestehenden Issues und Pull Requests gesucht.
+          required: true
