@@ -1,0 +1,50 @@
+name: Datenproblem melden
+description: Fehler, Aktualisierungen oder neue offene Datenquellen melden
+title: "[Data]: "
+labels:
+  - data
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Art des Anliegens
+      options:
+        - Fehlerhafte Daten
+        - Veraltete Daten
+        - Fehlende Daten
+        - Neue Datenquelle
+        - Lizenz- oder Quellenhinweis
+        - Sonstiges
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Beschreibung
+      description: Welche Daten sind betroffen und was sollte geändert werden?
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Quelle
+      description: Link oder offizielle Bezeichnung der Datenquelle, sofern vorhanden.
+  - type: textarea
+    id: license
+    attributes:
+      label: Lizenz und Nutzungsbedingungen
+      description: Falls bekannt, nenne Lizenz, Attribution oder relevante Nutzungsbedingungen.
+  - type: textarea
+    id: example
+    attributes:
+      label: Beispiel
+      description: Konkrete Datensätze, IDs, Orte oder nachvollziehbare Beispiele.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Vor dem Absenden
+      options:
+        - label: Die vorgeschlagenen Daten sind öffentlich oder dürfen rechtmäßig weitergegeben werden.
+          required: true
+        - label: Ich habe keine unnötigen personenbezogenen oder vertraulichen Daten eingefügt.
+          required: true
