@@ -1,8 +1,0 @@
-blank_issues_enabled: true
-contact_links:
-  - name: Allgemeiner Kontakt zum OK Lab Flensburg
-    url: https://oklabflensburg.de/
-    about: Für allgemeine Fragen, Kooperationen und Anliegen ohne passendes Repository.
-  - name: Sicherheitslücke melden
-    url: https://oklabflensburg.de/
-    about: Bitte Sicherheitsprobleme nicht als öffentliches Issue veröffentlichen.
