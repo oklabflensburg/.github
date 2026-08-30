@@ -1,0 +1,29 @@
+name: Dokumentation verbessern
+description: Fehlende, unklare oder falsche Dokumentation melden
+title: "[Docs]: "
+labels:
+  - documentation
+body:
+  - type: input
+    id: location
+    attributes:
+      label: Betroffene Dokumentation
+      description: Seite, Datei, URL oder Abschnitt.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Was ist unklar oder fehlt?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Verbesserungsvorschlag
+  - type: checkboxes
+    id: contribute
+    attributes:
+      label: Mitarbeit
+      options:
+        - label: Ich kann mir vorstellen, selbst einen Pull Request dafür zu erstellen.
